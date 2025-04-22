@@ -4,5 +4,9 @@ export const Query={
 
         return context.db.cvs
 
+    },
+    getCv : (parent:any,args:any,context:any,info:any) =>{
+        return context.db.cvs.find((cv:any)=>cv.id==args.id)
+
     }
 }
