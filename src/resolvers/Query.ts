@@ -1,3 +1,3 @@
 export const Query={
-    hello:()=> 'hello graphql'
+    hello:(parent:any,args:any,context:any,info:any)=> `hello ${args.name}`
 }
