@@ -1,0 +1,28 @@
+type CV {
+  id: ID!
+  name: String!
+  age: Int!
+  job: String!
+  owner: User!
+  skills: [Skill!]!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  role: String!
+  cvs: [CV!]!
+}
+
+type Skill {
+  id: ID!
+  designation: String!
+  cvs: [CV!]!
+}
+
+type Query {
+  hello(name: String!): String!
+  getCvs:[CV]!
+  getCv(id:Int!): CV!
+}
