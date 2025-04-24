@@ -1,3 +1,6 @@
+import { CvEventType } from "../constants.js";
+import { publishCvEvent } from "../utils/publishCvEvent.js";
+
 export const Mutation = {
     createCV: (parent: any, { input }: any, context: any) => {
         const userExists = context.db.users.find((user: any) => user.id == input.ownerId);
@@ -26,7 +29,7 @@ export const Mutation = {
                 skillId: parseInt(skillId)
             });
         });
-
+        publishCvEvent(context.pubSub, CvEventType.CREATED, newCV);
         return newCV;
     },
 
@@ -59,6 +62,7 @@ export const Mutation = {
         };
         context.db.cvs[cvIndex] = updatedCV;
 
+        publishCvEvent(context.pubSub, CvEventType.UPDATED, updatedCV);
         return updatedCV;
     },
 
@@ -68,9 +72,10 @@ export const Mutation = {
             throw new Error(`CV with ID ${id} not found`);
         }
 
-        context.db.cvs.splice(cvIndex, 1);
+        const [removedCV] = context.db.cvs.splice(cvIndex, 1);
         context.db.cvSkills = context.db.cvSkills.filter((cs: any) => cs.cvId != id);
 
+        publishCvEvent(context.pubSub, CvEventType.DELETED, removedCV);
         return true;
     }
 }

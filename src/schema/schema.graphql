@@ -47,3 +47,18 @@ type Mutation {
   updateCV(id: ID!, input: UpdateCVInput!): CV!
   deleteCV(id: ID!): Boolean!
 }
+
+enum CvEventType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+type CvEventPayload {
+  type: CvEventType!
+  cv: CV!
+}
+
+type Subscription {
+  cvEvent: CvEventPayload!
+}
