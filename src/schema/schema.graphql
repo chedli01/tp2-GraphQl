@@ -23,6 +23,27 @@ type Skill {
 
 type Query {
   hello(name: String!): String!
-  getCvs:[CV]!
-  getCv(id:Int!): CV!
+  getCVs: [CV]!
+  getCV(id: Int!): CV!
+}
+
+input CreateCVInput {
+  name: String!
+  age: Int!
+  job: String!
+  ownerId: ID!
+  skillIds: [ID!]!
+}
+
+input UpdateCVInput {
+  name: String
+  age: Int
+  job: String
+  skillIds: [ID!]
+}
+
+type Mutation {
+  createCV(input: CreateCVInput!): CV!
+  updateCV(id: ID!, input: UpdateCVInput!): CV!
+  deleteCV(id: ID!): Boolean!
 }
