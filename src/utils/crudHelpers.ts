@@ -1,9 +1,15 @@
+import { GraphQLError } from "graphql";
+
 export function getAll(model: any[]) {
   return () => model;
 }
 
 export function getOne(model: any[], id: number | string, key: string = "id") {
-  return model.find((item: any) => item[key] == id);
+  const data = model.find((item: any) => item[key] == id);
+  if (!data) {
+    throw new GraphQLError("Not found")
+  }
+  return data
 }
 
 export function createItem(model: any[], data: any, additionalData = {}) {
@@ -26,7 +32,8 @@ export function updateItem(model: any[], id: number | string, data: any) {
 
 export function deleteItem(model: any[], id: number | string) {
   const index = model.findIndex((item) => item.id == id);
-  if (index === -1) return null;
+
+  if (index === -1) throw new GraphQLError("Not found");
   const [deleted] = model.splice(index, 1);
   return deleted;
 }
