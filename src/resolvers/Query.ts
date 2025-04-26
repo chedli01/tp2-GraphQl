@@ -2,7 +2,7 @@ export const Query = {
     hello: (parent: any, args: any) => `hello ${args.name}`,
 
     getCVs: (parent: any, args: any, context: any) => {
-        return context.prisma.cv.findMany({
+        return context.prisma.CV.findMany({
             include: {
                 skills: {
                     include: {
@@ -13,16 +13,26 @@ export const Query = {
         });
     },
 
-    getCV: (parent: any, args: any, context: any) => {
-        return context.prisma.cv.findUnique({
-            where: { id: Number(args.id) },
+    getCV: (parent: any, { id }: { id: number }, context: any) => {
+        return context.prisma.cV.findUnique({
+            where: {id: Number(id)},
             include: {
-                skills: {
+                owner: true,
+                cvSkills: {
                     include: {
                         skill: true
                     }
                 }
             }
+        }).then((cv: any) => {
+            if (!cv) {
+                throw new Error(`CV with ID ${id} not found`);
+            }
+
+            return {
+                ...cv,
+                skills: cv.cvSkills.map((cs: any) => cs.skill)
+            };
         });
     }
 };
