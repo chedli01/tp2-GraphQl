@@ -39,7 +39,7 @@ input UpdateCVInput {
   name: String
   age: Int
   job: String
-  skillIds: [ID!]
+  skillIds: [Int!]
 }
 
 input CreateUserInput {
