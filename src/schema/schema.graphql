@@ -48,14 +48,17 @@ type Mutation {
   deleteCV(id: ID!): Boolean!
 }
 
-enum CvEventType {
+
+
+enum EventType {
   CREATED
   UPDATED
   DELETED
 }
 
+
 type CvEventPayload {
-  type: CvEventType!
+  type: EventType!
   cv: CV!
 }
 

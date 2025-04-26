@@ -1,6 +1,11 @@
-export const CV_EVENT = 'CV_EVENT';
+export const EVENTS = {
+    CV: 'CV_EVENT',
+    USER: 'USER_EVENT',
+    SKILL: 'SKILL_EVENT',
+};
 
-export enum CvEventType {
+
+export enum EventType {
     CREATED = 'CREATED',
     UPDATED = 'UPDATED',
     DELETED = 'DELETED',

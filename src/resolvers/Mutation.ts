@@ -1,11 +1,11 @@
-import { CvEventType } from "../constants.js";
+import { EventType } from "../constants.js";
 import {
   createItem,
   deleteItem,
   getOne,
   updateItem,
 } from "../utils/crudHelpers.js";
-import { publishCvEvent } from "../utils/publishCvEvent.js";
+import { publishEvent } from "../utils/publishCvEvent.js";
 
 export const Mutation = {
   createCV: (parent: any, { input }: any, context: any) => {
@@ -25,7 +25,7 @@ export const Mutation = {
       context.db.cvSkills.push({ cvId: newCV.id, skillId: parseInt(skillId) })
     );
 
-    publishCvEvent(context.pubSub, CvEventType.CREATED, newCV);
+    publishEvent(context.pubSub, "CV", EventType.CREATED, { cv: newCV });
     return newCV;
   },
 
@@ -53,7 +53,7 @@ export const Mutation = {
     }
 
     const updatedCV = updateItem(context.db.cvs, id, input);
-    publishCvEvent(context.pubSub, CvEventType.UPDATED, updatedCV);
+    publishEvent(context.pubSub, "CV", EventType.UPDATED, { cv: updatedCV });
     return updatedCV;
   },
 
@@ -65,7 +65,7 @@ export const Mutation = {
       (cs: any) => cs.cvId != id
     );
 
-    publishCvEvent(context.pubSub, CvEventType.DELETED, deleted);
+    publishEvent(context.pubSub, "CV", EventType.DELETED, { cv: deleted });
     return true;
   },
 };
