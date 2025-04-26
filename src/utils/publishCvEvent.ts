@@ -1,5 +1,16 @@
-import { CV_EVENT, CvEventType } from '../constants.js';
+import { EVENTS } from '../constants.js';
+import { EventType } from '../constants.js';
 
-export const publishCvEvent = (pubSub: any, type: CvEventType, cv: any) => {
-    pubSub.publish(CV_EVENT, { cvEvent: { type, cv } });
+export const publishEvent = (
+    pubSub: any,
+    entity: keyof typeof EVENTS,
+    type: EventType,
+    payload: object
+) => {
+    pubSub.publish(EVENTS[entity], {
+        [`${entity.toLowerCase()}Event`]: {
+            type,
+            ...payload,
+        },
+    });
 };
