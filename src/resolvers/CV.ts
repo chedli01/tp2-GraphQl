@@ -1,15 +1,20 @@
-export const CV ={
-    owner : (parent:any,args:any,context:any,info:any)=>{
-      return context.db.users.find((user:any)=>user.id==parent.owner)
+export const CV = {
+    owner: (parent: any, _args: any, context: any) => {
+        return context.prisma.user.findUnique({
+            where: { id: parent.ownerId }
+        });
     },
-    skills: (parent:any,args:any,context:any,info:any)=>{
-      const cvId = parent.id;
-      const skillIds = context.db.cvSkills
-        .filter((cs: any) => cs.cvId == cvId)
-        .map((cs: any) => cs.skillId);
-
-      return context.db.skills.filter((skill: any) =>
-        skillIds.includes(skill.id)
-      );
-    },
-}
+    skills: async (parent: any, _args: any, context: any) => {
+        const cvWithSkills = await context.prisma.CV.findUnique({
+            where: { id: parent.id },
+            include: {
+                cvSkills: {
+                    include: {
+                        skill: true
+                    }
+                }
+            }
+        });
+        return cvWithSkills?.cvSkills.map((cvSkill: any) => cvSkill.skill) || [];
+    }
+};

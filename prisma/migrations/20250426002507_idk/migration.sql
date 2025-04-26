@@ -1,0 +1,13 @@
+-- CreateTable
+CREATE TABLE `CVSkill` (
+    `cvId` INTEGER NOT NULL,
+    `skillId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`cvId`, `skillId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `CVSkill` ADD CONSTRAINT `CVSkill_cvId_fkey` FOREIGN KEY (`cvId`) REFERENCES `CV`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CVSkill` ADD CONSTRAINT `CVSkill_skillId_fkey` FOREIGN KEY (`skillId`) REFERENCES `Skill`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
